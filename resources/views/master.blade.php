@@ -104,6 +104,12 @@
                     <span>Laporan per Tanggal</span></a>
             </li>
 
+            <li class="nav-item @yield('user_active')">
+                <a class="nav-link" href="{{ route('user.index') }}">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Pengguna</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

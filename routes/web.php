@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\A1Controller;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardApiController;
 use App\Http\Controllers\TimbanganPerBagController;
@@ -31,3 +32,4 @@ Route::get('timbangan_per_bag/{context}', TimbanganPerBagController::class)->nam
 Route::get('timbangan_per_jam/{context}', [TimbanganPerJamController::class, 'index'])->name('timbangan_per_jam')->middleware(['auth']);
 Route::get('laporan_per_tanggal/', [LaporanPerTanggalController::class, 'index'])->name('laporan_per_tanggal.index')->middleware(['auth']);
 Route::get('laporan_per_tanggal/{from}/{to}', [LaporanPerTanggalController::class, 'data'])->name('laporan_per_tanggal.data')->middleware(['auth']);
+Route::resource('user', UserController::class)->middleware(['auth']);

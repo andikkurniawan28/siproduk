@@ -15,7 +15,6 @@
             </h5>
         </div>
         <div class="card-body">
-            <!-- Form untuk filter rentang tanggal -->
             <form id="filterForm" method="GET" action="">
                 <div class="form-row">
                     <div class="col-md-5 mb-3">
@@ -33,7 +32,6 @@
                 </div>
             </form>
 
-            <!-- Tabel untuk menampilkan data -->
             <div class="table-responsive mt-4">
                 <table class="table table-bordered text-dark table-hover table-striped data-table" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -44,7 +42,6 @@
                         </tr>
                     </thead>
                     <tbody id="data-body">
-                        <!-- Data akan dimasukkan melalui AJAX -->
                     </tbody>
                 </table>
             </div>
@@ -64,39 +61,36 @@
 
     <script>
         $(document).ready(function() {
-            // Kirim request dengan filter tanggal saat form disubmit
             $('#filterForm').on('submit', function(e) {
-                e.preventDefault(); // Mencegah form untuk submit secara normal
+                e.preventDefault();
 
-                // Ambil data tanggal dari form
                 let fromDate = $('#from_date').val();
                 let toDate = $('#to_date').val();
 
                 function formatDate(dateString) {
                     const date = new Date(dateString);
+                    date.setHours(date.getUTCHours() + 0);
+
                     const year = date.getFullYear();
                     const month = String(date.getMonth() + 1).padStart(2, '0');
                     const day = String(date.getDate()).padStart(2, '0');
                     const hours = String(date.getHours()).padStart(2, '0');
                     const minutes = String(date.getMinutes()).padStart(2, '0');
                     const seconds = String(date.getSeconds()).padStart(2, '0');
+
                     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 }
 
-                // Pastikan bahwa kedua tanggal telah diisi
                 if (fromDate && toDate) {
-                    // Mengirim request AJAX ke controller
                     $.ajax({
-                        url: "/laporan_per_tanggal/" + fromDate + "/" + toDate, // Format URL yang benar
+                        url: "/laporan_per_tanggal/" + fromDate + "/" + toDate,
                         method: 'GET',
                         success: function(response) {
-                            // Kosongkan tabel sebelum menambahkan data baru
                             $('#data-body').empty();
 
                             if (response.length === 0) {
                                 alert("Tidak ada data untuk tanggal yang dipilih!");
                             } else {
-                                // Looping untuk memasukkan data ke dalam tabel
                                 response.forEach(function(item) {
                                     $('#data-body').append(`
                                         <tr>
@@ -107,15 +101,14 @@
                                     `);
                                 });
 
-                                // Inisialisasi DataTable tanpa pagination (show all)
                                 $('#dataTable').DataTable({
-                                    dom: 'Bfrtip', // Defining the position of table controls
+                                    dom: 'Bfrtip',
                                     buttons: [
                                         'excelHtml5',
                                         'pdfHtml5'
                                     ],
-                                    pageLength: -1, // Show all rows, no pagination
-                                    lengthMenu: [[-1], ["All"]] // Option to show all rows
+                                    pageLength: -1,
+                                    lengthMenu: [[-1], ["All"]]
                                 });
                             }
                         },
